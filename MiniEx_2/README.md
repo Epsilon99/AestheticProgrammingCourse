@@ -1,6 +1,6 @@
 # miniex 2: Dancing John
 
-The idea behind the project Dancing John, was to have a cartoon character whom expresses noise (in a programming sense).
+The idea behind the project Dancing John, was to have a cartoon character whom expresses noise (in digital artefacts).
 
 The noise is expressed with the "unnecessary" randomness that dictates the appearance of Dancing John. 
  
