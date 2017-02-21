@@ -16,4 +16,4 @@ On top of all the randomness, you will eventually have seeds that makes for an u
 But since the interval is so short, and most seeds will generate a perfectly readable character, what does the difference make for the viewer? You might even call it a glitch, since it's a rare case which doesn't break the program, but breaks the understanding of the program for the few viewers whom might see one of the unreadable seeds. The issue could easily be fixed, but is it worth the cost of resources? 
 
 You can see the result on my GitHub page
-https://epsilon99.github.io/AestheticProgrammingCourse/MiniEx_2/
+https://epsilon99.github.io/AestheticProgrammingCourse/MiniExcercises/MiniEx_2/
