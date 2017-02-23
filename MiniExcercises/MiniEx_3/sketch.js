@@ -29,7 +29,7 @@ var enemies = [];
 
 var bulletSpeed = 6;
 var bullets = [];
-var cooldown = 500;
+var cooldown = 300;
 var cooldownTimer;
 
 var throbberCircles = [];
