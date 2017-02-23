@@ -25,36 +25,60 @@ class ThrobberCircle {
 }
 
 var enemySpeed = 5;
-var bulletSpeed = 10;
-
 var enemies = [];
+
+var bulletSpeed = 6;
 var bullets = [];
+var cooldown = 500;
+var cooldownTimer;
+
 var throbberCircles = [];
+var throbberRadius = 35;
 
 var middleVector;
-
-var throbberRadius = 35;
 
 var areWeIdle = true;
 
 function setup() 
 {
 	createCanvas(800,600);
-
 	middleVector = new Vector2D(width * 0.5, height * 0.5);
+	cooldownTimer = Date.now();
 }
 
 function draw() 
 {
 	clear();
 	background(0);
-	throbberAim();
+	gameInput();
 	updateBullets();
 }
 
 function idleThrobber()
 {
 
+}
+
+function gameInput()
+{
+	throbberAim();
+
+	if(mouseIsPressed && cooldownTimer <= Date.now())
+	{
+		fireBullet();
+	}
+}
+
+function fireBullet()
+{
+	var firingDir = new Vector2D(mouseX - middleVector.x, mouseY - middleVector.y);
+	firingDir = vectorNormalize(firingDir);
+
+	var bulletClone = new MovingObject(middleVector.x + (throbberRadius * firingDir.x),middleVector.y + (throbberRadius * firingDir.y), bulletSpeed, firingDir);
+
+	bullets.push(bulletClone);
+
+	cooldownTimer = Date.now() + cooldown;
 }
 
 function throbberAim()
@@ -70,6 +94,7 @@ function throbberAim()
 function updateBullets()
 {
 	var bulletsLength = bullets.length;
+	var bulletesToDelte = [];
 
 	for(i = 0; i < bulletsLength; i++)
 	{
@@ -78,9 +103,32 @@ function updateBullets()
 		bullets[i].curX = newPosX;
 		bullets[i].curY = newPosY;
 
-		fill(0);
-		noStroke();
-		ellipse(newPosX,newPosY,5);
+		var deleteFlag = false;
+
+		if(newPosX > width || newPosX < 0)
+			deleteFlag = true;
+		else if(newPosY > height || newPosY < 0)
+			deleteFlag = true;
+
+		
+
+		if(deleteFlag == false)
+		{
+			fill(0,255,86);
+			noStroke();
+			ellipse(newPosX,newPosY,5);
+		}
+		else
+		{
+			bulletesToDelte.push(i);
+		}
+	}
+
+	var deleteListLengeth = bulletesToDelte.length;
+
+	for(i = 0; i < deleteListLengeth; i++)
+	{
+		bullets.splice(bulletesToDelte[i], 1);
 	}
 }
 
