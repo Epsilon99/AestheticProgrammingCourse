@@ -24,13 +24,17 @@ class ThrobberCircle {
 	}
 }
 
-var enemySpeed = 5;
+var enemySpeed = 3;
 var enemies = [];
+var enemyRadius = 20;
 
 var bulletSpeed = 6;
 var bullets = [];
 var cooldown = 300;
 var cooldownTimer;
+
+var spawnCooldown = 1000;
+var spawnTimer;
 
 var throbberCircles = [];
 var throbberRadius = 35;
@@ -44,19 +48,32 @@ function setup()
 	createCanvas(800,600);
 	middleVector = new Vector2D(width * 0.5, height * 0.5);
 	cooldownTimer = Date.now();
+	spawnTimer = Date.now();
 }
 
 function draw() 
 {
 	clear();
 	background(0);
+	gameHandler();
 	gameInput();
-	updateBullets();
 }
 
 function idleThrobber()
 {
 
+}
+
+function gameHandler()
+{
+	if(spawnTimer <= Date.now())
+	{
+		spawnEnemy();
+		spawnTimer = Date.now() + spawnCooldown;
+	}
+
+	updateBulletsPosition();
+	updateEnemies();
 }
 
 function gameInput()
@@ -67,6 +84,16 @@ function gameInput()
 	{
 		fireBullet();
 	}
+}
+
+function throbberAim()
+{
+	var direction = new Vector2D(mouseX - middleVector.x, mouseY - middleVector.y);
+	direction = vectorNormalize(direction);
+
+	fill(220);
+	noStroke();
+	ellipse(middleVector.x + (throbberRadius * direction.x),middleVector.y + (throbberRadius * direction.y),20);
 }
 
 function fireBullet()
@@ -81,17 +108,45 @@ function fireBullet()
 	cooldownTimer = Date.now() + cooldown;
 }
 
-function throbberAim()
+function spawnEnemy()
 {
-	var direction = new Vector2D(mouseX - middleVector.x, mouseY - middleVector.y);
-	direction = vectorNormalize(direction);
+	 var border = Math.floor(Math.random()*(4)+1) - 1;
+	 var spawnPos = new Vector2D(0,0);
+	 
+	 switch(border)
+	 {
+	 	case 0:
+	 		spawnPos.y = -10;
+	 		spawnPos.x = Math.floor(Math.random()*((width + 10)-(-10)+1)-10);
+	 		break;
 
-	fill(220);
-	noStroke();
-	ellipse(middleVector.x + (throbberRadius * direction.x),middleVector.y + (throbberRadius * direction.y),20);
+	 	case 1:
+	 		spawnPos.y = height + 10;
+	 		spawnPos.x = Math.floor(Math.random()*((width + 10)-(-10)+1)-10);
+	 		break;
+
+	 	case 2:
+	 		spawnPos.y = Math.floor(Math.random()*((height + 10)-(-10)+1)-10);
+	 		spawnPos.x = -10;
+	 		break;
+
+	 	case 3:
+			spawnPos.y = Math.floor(Math.random()*((height + 10)-(-10)+1)-10);
+	 		spawnPos.x = width + 10;
+	 		break;
+
+	 	default:
+	 		break;
+	 }
+
+	var movingDir = new Vector2D(middleVector.x - spawnPos.x, middleVector.y - spawnPos.y);
+	movingDir = vectorNormalize(movingDir);
+
+	var tEnemy = new MovingObject(spawnPos.x, spawnPos.y, enemySpeed, movingDir);
+	enemies.push(tEnemy);
 }
 
-function updateBullets()
+function updateBulletsPosition()
 {
 	var bulletsLength = bullets.length;
 	var bulletesToDelte = [];
@@ -136,16 +191,16 @@ function updateEnemies()
 {
 	var enemiesLength = enemies.length;
 
-	for(i = 0; i < bulletsLength; i++)
+	for(i = 0; i < enemiesLength; i++)
 	{
 		var newPosX = enemies[i].curX + (enemies[i].dir.x * enemySpeed);
 		var newPosY = enemies[i].curY + (enemies[i].dir.y * enemySpeed);
 		enemies[i].curX = newPosX;
 		enemies[i].curY = newPosY;
 
-		fill(0);
+		fill(255,0,0);
 		noStroke();
-		ellipse(newPosX,newPosY,5);
+		ellipse(newPosX,newPosY,enemyRadius);
 	}
 }
 
@@ -163,11 +218,3 @@ function vectorNormalize(thisVector)
 
 	return normalizedVector;
 }
-
-/*
-	var bulletClone = new MovingObject(width * 0.5, height * 0.5, bulletSpeed, 0);
-	var tDir = new Vector2D(20,4);
-	tDir = normalizeVector(tDir);
-	bulletClone.dir = tDir;
-	bullets.push(bulletClone);
-*/
