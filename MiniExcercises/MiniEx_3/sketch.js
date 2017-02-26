@@ -14,21 +14,12 @@ class MovingObject {
 	}
 }
 
-class ThrobberCircle {
-	constructor(x, y, width, color, curAlpha) {
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.color = color;
-		this.curAlpha = curAlpha;
-	}
-}
-
 var enemySpeed = 3;
 var enemies = [];
-var enemyRadius = 20;
+var enemyWidth = 20;
 
 var bulletSpeed = 6;
+var bulletSize = 5;
 var bullets = [];
 var cooldown = 300;
 var cooldownTimer;
@@ -36,10 +27,12 @@ var cooldownTimer;
 var spawnCooldown = 1000;
 var spawnTimer;
 
-var throbberCircles = [];
-var throbberRadius = 35;
+var throbberRadius = 45;
 
 var middleVector;
+
+var score = 0;
+var life = 5;
 
 var areWeIdle = true;
 
@@ -49,31 +42,67 @@ function setup()
 	middleVector = new Vector2D(width * 0.5, height * 0.5);
 	cooldownTimer = Date.now();
 	spawnTimer = Date.now();
+
+	frameRate (15);
+	background(0);
 }
 
 function draw() 
 {
-	clear();
-	background(0);
-	gameHandler();
-	gameInput();
+	console.log(areWeIdle);
+
+	if(areWeIdle == true)
+	{		
+		fill(10,80);
+		rect(0, 0, width, height);
+		idleThrobber(11);
+	}
+	
+	if(areWeIdle == false)
+	{
+		clear();
+		background(0);
+		gameHandler();
+		gameInput();
+	}
 }
 
-function idleThrobber()
+function mouseClicked()
 {
+	if(areWeIdle == true)
+	{
+		frameRate (60);
+		areWeIdle = false;
+		console.log(areWeIdle);
+	}
+}
 
+function idleThrobber(num)
+{
+	push();
+  	translate(width/2, height/2);
+	var cir = 360/num*(frameCount%num);
+	rotate(radians(cir));
+	noStroke();
+	fill(220); 
+	ellipse(throbberRadius,0,20);
+	pop();
 }
 
 function gameHandler()
 {
+	updateBulletsPosition();
+	updateEnemies();
+	bulletHitDetection();
+
 	if(spawnTimer <= Date.now())
 	{
 		spawnEnemy();
 		spawnTimer = Date.now() + spawnCooldown;
 	}
 
-	updateBulletsPosition();
-	updateEnemies();
+	lifeIndicator();
+	scoreGUI();
 }
 
 function gameInput()
@@ -84,6 +113,24 @@ function gameInput()
 	{
 		fireBullet();
 	}
+}
+
+function scoreGUI()
+{
+	fill(255);
+	textSize(32);
+	text("Score: " + score,middleVector.x,40);
+}
+
+function lifeIndicator()
+{
+	fill(220);
+	ellipse(middleVector.x,middleVector.y,35);
+
+	fill(20);
+	textSize(16);
+	textAlign(CENTER);
+	text("" + life,middleVector.x,middleVector.y + 8);
 }
 
 function throbberAim()
@@ -171,7 +218,7 @@ function updateBulletsPosition()
 		{
 			fill(0,255,86);
 			noStroke();
-			ellipse(newPosX,newPosY,5);
+			ellipse(newPosX,newPosY,bulletSize);
 		}
 		else
 		{
@@ -200,7 +247,50 @@ function updateEnemies()
 
 		fill(255,0,0);
 		noStroke();
-		ellipse(newPosX,newPosY,enemyRadius);
+		ellipse(newPosX,newPosY,enemyWidth);
+	}
+}
+
+function bulletHitDetection()
+{
+	var lengthCheck = (enemyWidth * 0.5) + (bulletSize * 0.5);
+
+	var bulletsLength = bullets.length;
+	var enemiesLength = enemies.length;
+
+	var bulletCleanList = [];
+	var enemiesCleanList = [];
+
+	for(var i = 0; i < bulletsLength; i++)
+	{
+
+		for(var j = 0; j < enemiesLength; j++)
+		{
+			var vectorBetween = new Vector2D(0,0);
+			vectorBetween.x = enemies[j].curX - bullets[i].curX;
+			vectorBetween.y = enemies[j].curY - bullets[i].curY;
+
+			if(vectorMagnitude(vectorBetween) <= lengthCheck)
+			{
+				bulletCleanList.push(i);
+				enemiesCleanList.push(j);
+				score++;
+				break;
+			}
+		}
+	}
+
+	var bulletCleanListLength = bulletCleanList.length;
+	var enemiesCleanListLength = enemiesCleanList.length;
+
+	for(i = 0; i < bulletCleanListLength; i++)
+	{
+		bullets.splice(bulletCleanListLength[i], 1);
+	}
+
+	for(i = 0; i < enemiesCleanListLength; i++)
+	{
+		enemies.splice(enemiesCleanListLength[i], 1);
 	}
 }
 
