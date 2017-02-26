@@ -56,6 +56,11 @@ function draw()
 		fill(10,80);
 		rect(0, 0, width, height);
 		idleThrobber(11);
+
+		fill(255);
+		textSize(32);
+		textAlign(CENTER);
+		text("Click to play",middleVector.x,height - 200);
 	}
 	
 	if(areWeIdle == false)
