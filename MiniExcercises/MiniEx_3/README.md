@@ -1,5 +1,8 @@
 # miniex 3: Throbber invaders!
 
+Try the game:
+https://epsilon99.github.io/AestheticProgrammingCourse/MiniExcercises/MiniEx_3/
+
 My design focuses on entertaining people, instead of just halting the entertainment process. Much like Google Chrome implemented an endless runner game, on their 404-pages. I like the idea of rethinking the tedious act of waiting on computer processes. If I am prompted with a static loading process, which I can do nothing to neither understand nor avoid, then how am I supposed to be in focus as the user? The throbber design is made to tell the user that a process is going on, which you will have to wait out. In my design, you have the option to choose to play a game, while the buffering is going on. 
 The game itself is not done at this stage it is merely a proof-of-concept. The game is an endless wave-based shooter, in which you play one of the throbber circles, trying to stop red throbber circles from hitting your base. 
 
