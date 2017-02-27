@@ -28,6 +28,7 @@ var spawnCooldown = 1000;
 var spawnTimer;
 
 var throbberRadius = 45;
+var homeThrobberRadius = 35;
 
 var middleVector;
 
@@ -35,6 +36,7 @@ var score = 0;
 var life = 5;
 
 var areWeIdle = true;
+var didWeDie = false;
 
 function setup() 
 {
@@ -43,7 +45,7 @@ function setup()
 	cooldownTimer = Date.now();
 	spawnTimer = Date.now();
 
-	frameRate (15);
+	frameRate(15);
 	background(0);
 }
 
@@ -65,10 +67,27 @@ function draw()
 	
 	if(areWeIdle == false)
 	{
-		clear();
-		background(0);
-		gameHandler();
-		gameInput();
+		if(didWeDie == false)
+		{
+			clear();
+			background(0);
+			gameHandler();
+			gameInput();
+		}
+		else
+		{
+			fill(10,80);
+			rect(0, 0, width, height);
+			idleThrobber(11);
+
+			fill(255);
+			textSize(32);
+			textAlign(CENTER);
+			text("Game Over",middleVector.x, 200);
+			text("Click to play again", middleVector.x,height - 200);
+			textSize(28);
+			text("Your score: " + score, middleVector.x,230);
+		}
 	}
 }
 
@@ -79,6 +98,12 @@ function mouseClicked()
 		frameRate (60);
 		areWeIdle = false;
 		console.log(areWeIdle);
+	}
+
+	if(areWeIdle == false && didWeDie == true)
+	{
+		resetGame();
+		frameRate(60);
 	}
 }
 
@@ -99,6 +124,7 @@ function gameHandler()
 	updateBulletsPosition();
 	updateEnemies();
 	bulletHitDetection();
+	enemyHitDetection();
 
 	if(spawnTimer <= Date.now())
 	{
@@ -108,6 +134,15 @@ function gameHandler()
 
 	lifeIndicator();
 	scoreGUI();
+}
+
+function resetGame()
+{
+	score = 0;
+	life = 5;
+	didWeDie = false;
+	bullets = [];
+	enemies = [];
 }
 
 function gameInput()
@@ -130,12 +165,24 @@ function scoreGUI()
 function lifeIndicator()
 {
 	fill(220);
-	ellipse(middleVector.x,middleVector.y,35);
+	ellipse(middleVector.x,middleVector.y,homeThrobberRadius);
 
 	fill(20);
 	textSize(16);
 	textAlign(CENTER);
 	text("" + life,middleVector.x,middleVector.y + 8);
+}
+
+
+function updateLife(amount)
+{
+	life = life + amount;
+
+	if(life <= 0)
+	{
+		didWeDie = true;
+		frameRate(15);
+	}
 }
 
 function throbberAim()
@@ -217,8 +264,6 @@ function updateBulletsPosition()
 		else if(newPosY > height || newPosY < 0)
 			deleteFlag = true;
 
-		
-
 		if(deleteFlag == false)
 		{
 			fill(0,255,86);
@@ -290,13 +335,43 @@ function bulletHitDetection()
 
 	for(i = 0; i < bulletCleanListLength; i++)
 	{
-		bullets.splice(bulletCleanListLength[i], 1);
+		bullets.splice(bulletCleanList[i], 1);
 	}
 
 	for(i = 0; i < enemiesCleanListLength; i++)
 	{
-		enemies.splice(enemiesCleanListLength[i], 1);
+		enemies.splice(enemiesCleanList[i], 1);
 	}
+}
+
+function enemyHitDetection()
+{
+	var lengthCheck = (homeThrobberRadius * 0.5) + (enemyWidth * 0.5);
+
+	var enemiesLength = enemies.length;
+	var enemiesCleanList = [];
+
+	for(var i = 0; i < enemiesLength; i++)
+	{
+		var vectorBetween = new Vector2D(0,0);
+		vectorBetween.x = middleVector.x - enemies[i].curX;
+		vectorBetween.y = middleVector.y - enemies[i].curY;
+
+		if(vectorMagnitude(vectorBetween) <= lengthCheck)
+		{
+			enemiesCleanList.push(i);
+			updateLife(-1);
+			break;
+		}
+	}
+
+	var enemiesCleanListLength = enemiesCleanList.length;
+
+	for(i = 0; i < enemiesCleanListLength; i++)
+	{
+		enemies.splice(enemiesCleanList[i], 1);
+	}
+
 }
 
 function vectorMagnitude(thisVector)
