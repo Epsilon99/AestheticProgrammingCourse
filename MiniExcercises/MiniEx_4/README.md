@@ -42,3 +42,5 @@ As last time, I'm making a to-do list. Mostly for myself, but feel free to play 
 * Making changes to the color scheme (unpopulated and populated cells) over time.
 * Making the player choose the time inbetween updates (maybe a slider).
 * Making the player set the grid size of the game.
+
+**Edit** Misplaced a function, so pausing would cause a complete wipe of the generation and messing up the user input during editor mode.

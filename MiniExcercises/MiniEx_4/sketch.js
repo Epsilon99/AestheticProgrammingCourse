@@ -16,8 +16,7 @@ class Cell {
 }
 
 class Button{
-	constructor(x,y,width,height,text)
-	{
+	constructor(x,y,width,height,text){
 		this.x = x;
 		this.y = y;
 		this.width = width;
@@ -312,8 +311,6 @@ function GUI()
 			textSize(20);
 			text(buttonsPlaying[i].text, buttonsPlaying[i].x + (buttonsPlaying[i].width * 0.5), buttonsPlaying[i].y + (buttonsPlaying[i].height * 0.5) + 5)
 		}
-
-
 	}
 }
 
@@ -375,11 +372,16 @@ function checkPlayingButtons()
 		switch(buttonText)
 		{
 			case "Pause":
-				isGameRunning = false;
-				wipeGeneration();
+				pause();
 				break;
 			
 			default:
 		}
 	}
+}
+
+function pause()
+{
+	isGameRunning = false;
+	wipeNextGeneration();
 }
