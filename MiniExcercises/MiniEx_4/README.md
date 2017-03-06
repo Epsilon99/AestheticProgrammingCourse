@@ -1,6 +1,7 @@
 # miniex 4: Game of Life
 
 ![Screenshot of the project](miniEx4_GameOfLife.png?raw=true "Screenshot of the project")
+Try the game [here](https://epsilon99.github.io/AestheticProgrammingCourse/MiniExcercises/MiniEx_4/)
 
 I made an implementation of Conway's Game of Life, which is a zero-player game. This means that once the program is running there is no player, only calculation in the laws of the game. 
 
