@@ -32,6 +32,13 @@ function draw() {
 function writeText()
 {
 	var curTextSize = windowHeight / 10;
+	var longestString = 0;
+
+	for(var i = 0; i < words.length; i++)
+	{
+		if(words[i].length > longestString)
+			longestString = words[i].length;
+	}
 
 	for(var i = 0; i < words.length; i++)
 	{
