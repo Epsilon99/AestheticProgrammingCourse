@@ -2,7 +2,7 @@
 
 ![Screenshot of the project](miniEx5_BadPoemGenerator.png?raw=true "Screenshot of the project")
 
-For this miniex, I made a simple little generator of poems. I tried approaching the project, with making a generator which made versions of the classic "roses are red"-poems, but failed. Instead I made somewhat of a mess, which you can try out [here](https://epsilon99.github.io/AestheticProgrammingCourse/MiniExcercises/MiniEx_2/).
+For this miniex, I made a simple little generator of poems. I tried approaching the project, with making a generator which made versions of the classic "roses are red"-poems, but failed. Instead I made somewhat of a mess, which you can try out [here](https://epsilon99.github.io/AestheticProgrammingCourse/MiniExcercises/MiniEx_5/).
 
 I really didn't like this miniexcercise too much. The libary we were to use, didn't really have an easy access to it, plus some features really didn't make much sense to me (I'll get back to those). It might help getting to know the libary a bit better, but I really didn't find its structure and functions intuitive enough for me to find a proper workflow.
 
