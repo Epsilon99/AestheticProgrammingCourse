@@ -1,223 +1,178 @@
-class Cell {
-	constructor(curState, nextState, N, S, W, E, NW, NE, SW, SE, indexX, indexY, sprite) {
-		this.curState = curState;
-		this.nextState = nextState;
-		this.N = N;
-		this.S = S;
-		this.W = W;
-		this.E = E;
-		this.NW = NW;
-		this.NE = NE;
-		this.SW = SW;
-		this.SE = SE;
-		this.indexX = indexX;
-		this.indexY = indexY;
+class dungeonTile {
+	constructor(type, x, y, sprite) {
+		this.type = type;
+		this.x = x;
+		this.y = y;
 		this.sprite = sprite;
 	}
 }
 
-var cells = [];
+var curMap = [];
+var newMap = [];
+
+var dungeonTiles = [];
+
+var rows = 64;
+var cols = 64;
+var cellSize = 16;
 
 var chanceToStartAlive = 50;
 var starvationLimit = 3;
-var overpopLimit = 6;
 var birthLimit = 4;
-var numberOfSteps = 4;
-var numberCounter = 0;
+var mapTuningSteps = 4;
+var tuningCounter = 0;
 
-var cellCount;
-var cellSize = 16;
+var mapDone = false;
+var didWeConvert = false;
 
-var gridSizeX = 1024;
-var gridSizeY = 1024;
+var debugCounter = 0;
 
 function setup() {
-	createCanvas(gridSizeX + 1,gridSizeY + 1);
-	cellCount = gridSizeX / cellSize;
-
-	createNewMap();
-	drawMap(false, true);
-	
+	createCanvas((cols * cellSize) + 1, (rows * cellSize) + 1);
+	initialiseMap();
+	drawMap();
 }
 
 function draw() {
-	drawMap(false, true);
-
-	if(numberCounter < numberOfSteps)
+	
+	if(!mapDone)
 	{
-		evaluateGeneration();
-		advanceGeneration();
-		numberCounter++;
+		if(tuningCounter < mapTuningSteps)
+		{
+			doMapSimulation();
+			switchMap();
+			drawMap();
+			tuningCounter++;
+		}
+		else
+		{
+			mapDone = true;
+		}
+	}
+	else
+	{
+		if(!didWeConvert)
+		{
+			convertMapToTiles(curMap);
+			didWeConvert = true;
+		}
 	}
 }
 
 function mouseClicked()
 {
-	
+	console.log(dungeonTiles[debugCounter]);
+	debugCounter++;
 }
 
-function createNewMap()
+function initialiseMap()
 {
-	rows = cellCount;
-	collums = cellCount; 
-
-	for(i = 0; i < collums; i++)
+	for(i = 0; i < cols; i++)
 	{
 		for(j = 0; j < rows; j++)
 		{
-			var tCell = new Cell(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-			tCell.indexX = j;
-			tCell.indexY = i;
+			curMap.push([i,j]);
 
 			if(random(0,100) <= chanceToStartAlive)
-				tCell.curState = 1;
-
-			cells.push(tCell);
-		}
-	}
-
-	var cellsLength = cells.length;
-
-	for(i = 0; i < cellsLength; i++)
-	{
-		var iIndexX = cells[i].indexX;
-		var iIndexY = cells[i].indexY;
-
-		for(j = 0; j < cellsLength; j++)
-		{
-			var jIndexX = cells[j].indexX;
-			var jIndexY = cells[j].indexY;
-
-			//Create link between a cell and its neighbours
-			if(jIndexX == (iIndexX - 1) && jIndexY == iIndexY)
-				cells[i].W = cells[j];
-
-			if(jIndexX == (iIndexX + 1) && jIndexY == iIndexY)
-				cells[i].E = cells[j];
-
-			if(jIndexY == (iIndexY - 1) && jIndexX == iIndexX)
-				cells[i].N = cells[j];
-
-			if(jIndexY == (iIndexY + 1) && jIndexX == iIndexX)
-				cells[i].S = cells[j];
-			
-			if(jIndexX == (iIndexX - 1) && jIndexY == (iIndexY - 1))
-				cells[i].NW = cells[j];
-
-			if(jIndexX == (iIndexX + 1) && jIndexY == (iIndexY - 1))
-				cells[i].NE = cells[j];
-
-			if(jIndexX == (iIndexX - 1) && jIndexY == (iIndexY + 1))
-				cells[i].SW = cells[j];
-
-			if(jIndexX == (iIndexX + 1) && jIndexY == (iIndexY + 1))
-				cells[i].SE = cells[j];
-		}
-	}
-}
-
-function evaluateGeneration()
-{
-	var cellsLength = cells.length;
-
-	for(var i = 0; i < cellsLength; i++)
-	{
-		var populatedNeighbours = 0;
-
-		//Count amount of populated neighbours
-		if(cells[i].W != undefined && cells[i].W.curState == 1)
-			populatedNeighbours++;
-
-		if(cells[i].E != undefined && cells[i].E.curState == 1)
-			populatedNeighbours++;
-
-		if(cells[i].N != undefined && cells[i].N.curState == 1)
-			populatedNeighbours++;
-
-		if(cells[i].S != undefined && cells[i].S.curState == 1)
-			populatedNeighbours++;
-		else if(cells[i].S == undefined)
-			populatedNeighbours++;
-
-		if(cells[i].NW != undefined && cells[i].NW.curState == 1)
-			populatedNeighbours++;
-
-		if(cells[i].NE != undefined && cells[i].NE.curState == 1)
-			populatedNeighbours++;
-
-		if(cells[i].SW != undefined && cells[i].SW.curState == 1)
-			populatedNeighbours++;
-
-		if(cells[i].SE != undefined && cells[i].SE.curState == 1)
-			populatedNeighbours++;
-		
-
-		//Apply the laws of Conway's Game of Life
-		if(cells[i].curState == 1)
-		{
-			if(populatedNeighbours < starvationLimit)
-			{
-				cells[i].nextState = 0;
-			}
+				curMap[i][j] = true;
 			else
-				cells[i].nextState = 1;
-		}
-		else if(cells[i].curState == 0)
-		{
-			if(populatedNeighbours > birthLimit)
-				cells[i].nextState = 1;
+				curMap[i][j] = false;
 		}
 	}
 }
 
-function advanceGeneration()
+function countAliveNeighbours(map, x, y)
 {
-	var cellsLength = cells.length;
+	var neighbourCount = 0;
 
-	for(var i = 0; i < cellsLength; i++)
+	for(var i = -1; i < 2; i++)
 	{
-		cells[i].curState = cells[i].nextState;
-	}
-}
-
-function drawMap(withSprites, current)
-{
-	if(withSprites == false)
-	{
-		var cellsLength = cells.length;
-
-		for(var i = 0; i < cellsLength; i++)
+		for(var j = -1; j < 2; j++)
 		{
-			if(current == true)
+			var neighbourX = x + i;
+			var neighbourY = y + j;
+
+			if(i == 0 && j == 0)
 			{
-				if(cells[i].curState == 1)
-				{
-					fill(44, 46, 255);
-					rect(cells[i].indexX * cellSize, cells[i].indexY * cellSize, cellSize, cellSize);
-				}
-				else if(cells[i].curState == 0)
-				{
-					fill(0);
-					rect(cells[i].indexX * cellSize, cells[i].indexY * cellSize, cellSize, cellSize);
-				}
+				//don't do anything
+			}
+			else if(neighbourX < 0 || neighbourY < 0 || neighbourX > rows || neighbourY > cols)
+			{
+				//neighbourCount++;
+			}
+			else if(map[neighbourX][neighbourY] == true)
+			{
+				neighbourCount++;
+			}
+		}
+	}
+
+	return neighbourCount;
+}
+
+function doMapSimulation()
+{
+	for(var i = 0; i < cols; i++)
+	{
+		for(var j = 0; j < rows; j++)
+		{
+			var neighbourCount = countAliveNeighbours(curMap, i, j);
+			newMap.push([i,j]);
+
+			if(curMap[i][j])
+			{
+				if(neighbourCount < starvationLimit)
+					newMap[i][j] = false;
+				else
+					newMap[i][j] = true;
 			}
 			else
 			{
-				if(cells[i].nextState == 1)
-				{
-					fill(44, 46, 255);
-					rect(cells[i].indexX * cellSize, cells[i].indexY * cellSize, cellSize, cellSize);
-				}
-					else if(cells[i].nextState == 0)
-				{
-					fill(0);
-					rect(cells[i].indexX * cellSize, cells[i].indexY * cellSize, cellSize, cellSize);
-				}
+				if(neighbourCount > birthLimit)
+					newMap[i][j] = true;
+				else
+					newMap[i][j] = false;
 			}
 		}
 	}
-	else
+}
+
+function switchMap()
+{
+	curMap = newMap;
+	newMap = [];
+}
+
+function convertMapToTiles(map)
+{
+	for(var i = 0; i < cols; i++)
 	{
-		// Do sprite here
+		for(var j = 0; j < rows; j++)
+		{
+			var tTile = new dungeonTile(0,j,i,0); //fucked up with collums and rows, so now I flip them, to get the array sorted from left to right.
+
+			if(map[j][i])
+				tTile.type = "Floor";
+			else
+				tTile.type = "Wall";
+
+			dungeonTiles.push(tTile);
+		}
+	}
+}
+
+function drawMap()
+{
+	for(i = 0; i < cols; i++)
+	{
+		for(j = 0; j < rows; j++)
+		{
+			if(curMap[i][j])
+				fill(44, 46, 255);
+			else
+				fill(0);
+
+			rect(i * cellSize, j * cellSize, cellSize, cellSize);
+		}
 	}
 }
