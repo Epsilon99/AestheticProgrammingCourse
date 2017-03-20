@@ -85,9 +85,18 @@ function draw() {
 	}
 }
 
-function mouseClicked()
+// restart
+function keyPressed() {
 {
-
+	tileSprites = [];
+	dungeonTiles = [];
+	curMap = [];
+	newMap = [];
+	tuningCounter = 0;
+	mapDone = false;
+	didWeConvert = false;
+	waitCounter = Date.now() + waitBetween;
+	var imagebuildercounter = 0;
 }
 
 function initialiseMap()
@@ -317,6 +326,7 @@ function spriteHell()
 	tileSprites[106] = loadImage("sprites/sprite_106.jpg");
 	tileSprites[107] = loadImage("sprites/sprite_107.jpg");
 	tileSprites[120] = loadImage("sprites/sprite_120.jpg");
+	tileSprites[122] = loadImage("sprites/sprite_122.jpg");
 	tileSprites[123] = loadImage("sprites/sprite_123.jpg");
 	tileSprites[126] = loadImage("sprites/sprite_126.jpg");
 	tileSprites[127] = loadImage("sprites/sprite_127.jpg");
