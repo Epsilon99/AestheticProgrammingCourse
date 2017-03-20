@@ -19,7 +19,7 @@ var rows = 32;
 var cols = 32;
 var cellSize = 32;
 
-var chanceToStartAlive = 50;
+var chanceToStartAlive = 45;
 var starvationLimit = 3;
 var birthLimit = 4;
 var mapTuningSteps = 4;
@@ -49,7 +49,7 @@ function draw() {
 	
 	if(!mapDone)
 	{
-		if(tuningCounter < mapTuningSteps )
+		if(tuningCounter < mapTuningSteps)
 		{
 			if(Date.now() > waitCounter)
 			{
@@ -86,10 +86,8 @@ function draw() {
 }
 
 // restart
-function keyPressed() {
+function keyPressed()
 {
-	console.log("derp")
-	tileSprites = [];
 	dungeonTiles = [];
 	curMap = [];
 	newMap = [];
@@ -299,8 +297,7 @@ function drawTiledMap()
 
 
 // I should really have used a JSON, sprite splicer or spritesheet instead....
-function spriteHell()
-{
+function spriteHell() {
 	tileSprites[0] = loadImage("sprites/sprite_0.jpg");
 	tileSprites[2] = loadImage("sprites/sprite_2.jpg");
 	tileSprites[8] = loadImage("sprites/sprite_8.jpg");
