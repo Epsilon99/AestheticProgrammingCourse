@@ -321,6 +321,7 @@ function spriteHell() {
 	tileSprites[86] = loadImage("sprites/sprite_86.jpg");
 	tileSprites[88] = loadImage("sprites/sprite_88.jpg");
 	tileSprites[90] = loadImage("sprites/sprite_90.jpg");
+	tileSprites[91] = loadImage("sprites/sprite_91.jpg");
 	tileSprites[94] = loadImage("sprites/sprite_94.jpg");
 	tileSprites[95] = loadImage("sprites/sprite_95.jpg");
 	tileSprites[104] = loadImage("sprites/sprite_104.jpg");
