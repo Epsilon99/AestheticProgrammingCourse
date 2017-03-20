@@ -88,6 +88,7 @@ function draw() {
 // restart
 function keyPressed() {
 {
+	console.log("derp")
 	tileSprites = [];
 	dungeonTiles = [];
 	curMap = [];
@@ -96,7 +97,10 @@ function keyPressed() {
 	mapDone = false;
 	didWeConvert = false;
 	waitCounter = Date.now() + waitBetween;
-	var imagebuildercounter = 0;
+	imagebuildercounter = 0;
+
+	initialiseMap();
+	drawMap();
 }
 
 function initialiseMap()
