@@ -1,0 +1,40 @@
+input {
+	padding: 0px;
+	margin: 0px;
+}
+
+.checkbox-grass{
+    position: relative;
+    height: 17px;
+    width: 17px;
+}
+
+input[type="checkbox"] {
+    opacity:0;
+    height: 17px;
+    width: 17px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+}
+
+input[type="checkbox"] + label{
+    background:url('../images/checkbox-grass_unchecked.png') no-repeat;
+    height: 17px;
+    width: 17px;
+    display:inline-block;
+    padding: 0 0 0 0px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+input[type="checkbox"]:checked + label{
+    background:url('../images/checkbox-grass_checked.png') no-repeat;
+    height: 17px;
+    width: 17px;
+    display:inline-block;
+    padding: 0 0 0 0px;
+}
