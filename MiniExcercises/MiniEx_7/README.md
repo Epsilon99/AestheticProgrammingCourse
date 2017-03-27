@@ -1,3 +1,13 @@
-# miniex 6: Island-generator <-- Headline format
-![Screenshot of the project](miniEx6_IslandGenerator.png?raw=true "Screenshot of the project") <-- Image format
-[here](https://epsilon99.github.io/AestheticProgrammingCourse/MiniExcercises/MiniEx_6/) <-- Link format
+# miniex 7: SnakeBoxes
+
+![Screenshot of the project](miniEx7_SnakeBoxes?raw=true "Screenshot of the project")
+
+For this excercise, I ended up doing reverse engineering, kinda, of the old game Snake. [You can try it here](https://epsilon99.github.io/AestheticProgrammingCourse/MiniExcercises/MiniEx_7/).
+
+I did actually not want to make Snake as a game, but a kind of RTS game, where every role of the game had a class and a purpose in relation to each other. However, not being able to set the value of checkboxes ended up destroying that idea for me. Thus I ended up with snake, because I was intrigued by using the checkboxes as a kind of pixel-grid. It was almost like a blank canvas, just waiting to be used for some kind of old school gaming.
+  Initially I wanted there to be a kind of two player interaction, in the snake game. Where you as the second player, could alter the level, by clicking the checkboxes. But due to me misunderstanding the nested function (in class functions), I had to debug alot of the main code and I didn't even have time to implement all the main features I wanted there to be (Restart, menu without the checkboxes, etc.).
+
+## On classes and DOM
+To me, classes are essensial to programming. The idea behind having objects, makes the logical aspect of programming more intuative. Futhermore, it makes it easy for you to expand your project and try new ideas in an already exisitng project. You could say that a project becomes more flexible, by adding the use of classes and objects. However, you have to get used to thinking in objects, instead of just having a sketch. It's a new level of complexity added to the general way of coding, but I would argue that it is worth any effort put into it.
+
+DOM however is another case for me. I acknowledge the importance of DOM, in regards to implement scripting on websites. But having both a canvas and the html-page to work on, makes it rather complex to integrate to the together at the same time. futhermore, the P5 dom libarary dosen't seem to be all that well put together. I couldn't find the option to set the value of other form-elements than slider and textboxes. Meaning that radio-buttons and checkboxes, aren't able to be set via code, only checked. Futhermore there are elements of html5 and css3 that is not implementet properly in the p5 dom libarary, things like 'disabled' tag etc. All in all, I find that DOM is necessary for the way we make websites today, but P5 is not the JS libarary I would choose for my future projects in regards to websites.

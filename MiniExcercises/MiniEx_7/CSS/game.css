@@ -1,3 +1,16 @@
+.emptySpace{
+    background-color: #9bbc0f;
+}
+
+.snakeSpace{
+	background-color: #0f380f;
+}
+
+.fruitSpace{
+    background-color: #b20909;
+}
+
+/*
 input {
 	padding: 0px;
 	margin: 0px;
@@ -38,3 +51,4 @@ input[type="checkbox"]:checked + label{
     display:inline-block;
     padding: 0 0 0 0px;
 }
+*/
