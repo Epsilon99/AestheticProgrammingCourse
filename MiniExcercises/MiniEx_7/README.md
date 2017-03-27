@@ -1,6 +1,6 @@
 # miniex 7: SnakeBoxes
 
-![Screenshot of the project](miniEx7_SnakeBoxes?raw=true "Screenshot of the project")
+![Screenshot of the project](miniEx7_SnakeBoxes.png?raw=true "Screenshot of the project")
 
 For this excercise, I ended up doing reverse engineering, kinda, of the old game Snake. [You can try it here](https://epsilon99.github.io/AestheticProgrammingCourse/MiniExcercises/MiniEx_7/).
 
