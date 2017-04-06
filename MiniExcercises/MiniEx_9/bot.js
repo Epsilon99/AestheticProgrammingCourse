@@ -6,7 +6,7 @@ var config = require('./config');
 var usersToFollow = [];
 
 var lastCall = 0;
-var pageToCheck = 100; // We need to keep track of which pages we have checked. 
+var pageToCheck = 50; // We need to keep track of which pages we have checked. 
 
 var T = new Twit(config);
 
@@ -18,7 +18,8 @@ function twitterThings()
 {
 	if(usersToFollow.length > 0 )
 	{
-		followAUser(usersToFollow[usersToFollow.length - 1], i);
+		followAUser(usersToFollow[usersToFollow.length - 1]);
+		usersToFollow.splice(usersToFollow.length - 1, 1);
 	}
 	else
 	{
@@ -45,6 +46,7 @@ function twitterThings()
 				console.log("We succesfully got users");
 				if(pageToCheck > 1)
 					pageToCheck--;
+				console.log("Next page search: " + pageToCheck);
 
 				sortUsers(data);
 			}
@@ -52,7 +54,7 @@ function twitterThings()
 	}
 
 	// Function used to follow a specific user ID
-	function followAUser(UserID, arrayID)
+	function followAUser(UserID)
 	{
 		console.log("Trying to follow a user");
 
@@ -69,7 +71,6 @@ function twitterThings()
 			else
 			{
 				console.log("Now following: " + data.name + " - ID: " + data.id);
-				usersToFollow.splice(arrayID, 1);
 			}
 		}
 	}
@@ -90,17 +91,22 @@ function twitterThings()
 			// Check if the username contains Donald.
 			if(userName.indexOf('donald') >= 0)
 			{
-				console.log(userName + " - it contained donald!")
 				nameFlag = true;
 			}
 
 			// If the name is actually Donald, we start to check if we're following him or about to.
 			if(nameFlag == true)
 			{
-				console.log("added a user to the array");
 				// We make sure that we're not abusing the API by keeping to try sending request to people we sent to or are following already.
 				if(users[i].follow_request_sent == false && users[i].following == false)
+				{
+					console.log("added a user: " + users[i].name + " to the array");
 					usersToFollow.push(users[i].id);
+				}
+				else
+				{
+					console.log("We already follow: " + users[i].name);
+				}
 			}
 		}
 	}
