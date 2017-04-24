@@ -1,0 +1,26 @@
+{
+	"Actions": [
+		"fight",
+		"rescue",
+		"avenge",
+		"heal",
+		"assist",
+		"kill",
+		"get"
+	],
+	"Roles": [
+		"mother",
+		"father",
+		"boss",
+		"everyday worker",
+		"mineshaft inspector",
+		"president",
+		"baker",
+		"cunt"
+	],
+	"Phrases": [
+		"I am a $Roles who seeks to $Actions a $Roles",
+		"Yesterday I $Actions a $Roles while $Actions a $Roles",
+		"If I were a $Roles I would make sure that every $Roles in the streets were eradicated"
+	]
+}
