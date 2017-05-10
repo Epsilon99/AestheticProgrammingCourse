@@ -9,14 +9,11 @@ var db = require('./testFile.json');
 
 var uniqueEntries = [];
 
-var postTimer = setInterval(function(){ postMessage() }, 6000);
-var tickTimer = setInterval(function(){ tick() }, 3000);
+var tickTimer = setInterval(function(){ tick() }, 3600000);
 
 var timeToPost = true;
  
-tick(); 
- 
-// 15 min 900000
+tick();
 
 function tick()
 {	
@@ -24,7 +21,7 @@ function tick()
 	{
 		var message = '';
 		
-		var template = getRandomEntry('Template');
+		var template = getRandomEntry('Template'); 
 		template = template.split(' ');
 
 		for(var i = 0; i < template.length; i++)
@@ -111,9 +108,9 @@ function tick()
 	}
 }
 
-function postMessage()
+function tweetMessage()
 {
-	timeToPost = true;
+	
 }
 
 function getRandomEntry(table, criteria)
